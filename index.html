@@ -4,224 +4,428 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arc Guard Digital</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
---bg:#0b0c14;
---bg-soft:#121427;
---glass:rgba(255,255,255,0.06);
---border:rgba(255,255,255,0.15);
---blue:#4f8cff;
---violet:#8f5bff;
---cyan:#00e0ff;
---text:#ffffff;
---muted:#bfc6ff;
+
+/* =============================
+   ROOT SYSTEM
+============================= */
+
+:root {
+  --bg-dark: #0B0F1A;
+  --bg-charcoal: #0E0E14;
+  --violet: #8A2BE2;
+  --neon-blue: #3F5EFB;
+  --cyan: #00F0FF;
+  --magenta: #FF2E9F;
+  --text-gray: #B8B8C0;
+  --glass-bg: rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.1);
+  --transition: cubic-bezier(0.4, 0, 0.2, 1);
 }
-html{scroll-behavior:smooth}
-body{
-font-family:'Inter',sans-serif;
-background:radial-gradient(circle at 20% 20%,rgba(79,140,255,.15),transparent 40%),
-radial-gradient(circle at 80% 70%,rgba(143,91,255,.18),transparent 40%),
-var(--bg);
-color:var(--text);
-overflow-x:hidden}
-section{padding:110px 8%;position:relative}
-h2{text-align:center;font-size:2.2rem;margin-bottom:50px}
-p{color:var(--muted);line-height:1.7}
 
-/* Loader */
-.loader{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;transition:.6s}
-.loader span{width:55px;height:55px;border-radius:50%;border:4px solid rgba(255,255,255,.1);border-top:4px solid var(--blue);animation:spin 1s linear infinite}
-@keyframes spin{100%{transform:rotate(360deg)}}
+/* =============================
+   RESET
+============================= */
 
-/* Navbar */
-nav{position:fixed;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:22px 8%;z-index:1000;transition:.4s}
-nav.scrolled{background:rgba(15,17,30,.65);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
-.logo{font-weight:800;background:linear-gradient(90deg,var(--blue),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.nav-links{display:flex;gap:32px}
-.nav-links a{text-decoration:none;color:var(--text);position:relative;font-size:.95rem}
-.nav-links a::after{content:'';position:absolute;bottom:-6px;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--violet));transition:.3s}
-.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-/* Hamburger */
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
-.hamburger span{width:25px;height:2px;background:#fff;transition:.3s}
-.mobile-menu{position:fixed;top:0;right:-100%;width:260px;height:100vh;background:rgba(15,17,30,.9);backdrop-filter:blur(15px);padding:100px 30px;transition:.4s;display:flex;flex-direction:column;gap:25px}
-.mobile-menu a{color:#fff;text-decoration:none}
-.mobile-menu.active{right:0}
-.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-.hamburger.active span:nth-child(2){opacity:0}
-.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px)}
+html {
+  scroll-behavior:smooth;
+}
 
-/* Hero */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center}
-.glass{background:var(--glass);border:1px solid var(--border);backdrop-filter:blur(20px);padding:70px 50px;border-radius:22px;max-width:900px;animation:float 6s ease-in-out infinite;box-shadow:0 0 60px rgba(79,140,255,.15)}
-@keyframes float{50%{transform:translateY(-12px)}}
-.hero h1{font-size:2.7rem;margin-bottom:20px}
-.hero p{margin-bottom:30px;font-size:1.1rem}
-.btn{padding:14px 30px;border-radius:40px;background:linear-gradient(90deg,var(--blue),var(--violet));border:none;color:#fff;font-weight:600;text-decoration:none;transition:.3s}
-.btn:hover{transform:translateY(-4px);box-shadow:0 15px 40px rgba(79,140,255,.35)}
-.btn-group{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+body {
+  font-family:'Inter', sans-serif;
+  background: radial-gradient(circle at 20% 30%, rgba(138,43,226,0.15), transparent 40%),
+              radial-gradient(circle at 80% 70%, rgba(63,94,251,0.15), transparent 40%),
+              linear-gradient(180deg, var(--bg-dark), var(--bg-charcoal));
+  color:white;
+  overflow-x:hidden;
+}
 
-/* Cards */
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px}
-.card{background:var(--glass);border:1px solid var(--border);padding:35px;border-radius:20px;transition:.4s;backdrop-filter:blur(15px)}
-.card:hover{transform:translateY(-10px);box-shadow:0 0 40px rgba(79,140,255,.25);border-color:var(--blue)}
+/* =============================
+   LOADER
+============================= */
 
-/* Timeline */
-.timeline{position:relative;display:flex;flex-direction:column;gap:60px}
-.timeline::before{content:'';position:absolute;left:20px;top:0;width:3px;height:0;background:linear-gradient(var(--blue),var(--violet));transition:1.5s}
-.timeline.active::before{height:100%}
-.step{margin-left:60px;background:var(--glass);padding:25px;border-radius:15px;border:1px solid var(--border)}
-.step::before{content:'';position:absolute;left:12px;width:18px;height:18px;border-radius:50%;background:var(--blue)}
+.loader {
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  transition:opacity 0.6s ease;
+}
 
-/* Testimonials */
-.testimonials{display:flex;overflow:hidden;position:relative}
-.testimonial-track{display:flex;transition:transform .8s ease}
-.testimonial{min-width:100%;padding:30px}
-.stars{color:gold;margin-top:10px}
+.loader span {
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  border:4px solid var(--cyan);
+  border-top-color:transparent;
+  animation:spin 1s linear infinite;
+}
 
-/* Contact */
-.contact-form{max-width:600px;margin:auto;display:flex;flex-direction:column;gap:20px}
-.contact-form input,.contact-form textarea{padding:14px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:#fff}
-.contact-form input:focus,.contact-form textarea:focus{outline:none;border-color:var(--blue)}
+@keyframes spin {
+  to { transform:rotate(360deg); }
+}
 
-/* Floating Buttons */
-.whatsapp,.backtop{position:fixed;right:20px;width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;cursor:pointer;z-index:999}
-.whatsapp{bottom:90px;background:#25D366}
-.backtop{bottom:20px;background:linear-gradient(90deg,var(--blue),var(--violet));opacity:0;transition:.3s}
-.backtop.show{opacity:1}
+/* =============================
+   NAVBAR
+============================= */
 
-/* Reveal */
-.reveal{opacity:0;transform:translateY(40px);transition:.8s}
-.reveal.active{opacity:1;transform:none}
+.navbar {
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:20px 8%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:1000;
+  transition:0.4s var(--transition);
+}
 
-/* Footer */
-footer{text-align:center;padding:50px 8%;background:rgba(255,255,255,.04);border-top:1px solid var(--border)}
+.navbar.scrolled {
+  backdrop-filter:blur(20px);
+  background:rgba(10,10,20,0.6);
+}
+
+.logo {
+  font-weight:800;
+  font-size:1.3rem;
+  letter-spacing:1px;
+}
+
+.nav-links {
+  display:flex;
+  gap:30px;
+}
+
+.nav-links a {
+  text-decoration:none;
+  color:white;
+  font-size:0.9rem;
+  position:relative;
+  transition:0.3s;
+}
+
+.nav-links a::after {
+  content:"";
+  position:absolute;
+  bottom:-5px;
+  left:0;
+  width:0%;
+  height:2px;
+  background:linear-gradient(90deg,var(--neon-blue),var(--magenta));
+  transition:0.3s;
+}
+
+.nav-links a:hover::after {
+  width:100%;
+}
+
+/* =============================
+   HERO
+============================= */
+
+section {
+  padding:120px 8%;
+  position:relative;
+}
+
+.hero {
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+}
+
+.hero-container {
+  max-width:600px;
+  backdrop-filter:blur(20px);
+  background:var(--glass-bg);
+  border:1px solid var(--glass-border);
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 0 40px rgba(63,94,251,0.2);
+  animation:float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform:translateY(0px); }
+  50% { transform:translateY(-10px); }
+}
+
+.hero h1 {
+  font-size:3rem;
+  font-weight:900;
+  margin-bottom:20px;
+  line-height:1.2;
+}
+
+.hero p {
+  color:var(--text-gray);
+  margin-bottom:30px;
+  line-height:1.6;
+}
+
+.btn {
+  padding:12px 30px;
+  border-radius:50px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.4s var(--transition);
+}
+
+.btn-primary {
+  background:linear-gradient(90deg,var(--neon-blue),var(--magenta));
+  color:white;
+}
+
+.btn-primary:hover {
+  transform:translateY(-3px);
+  box-shadow:0 0 20px var(--magenta);
+}
+
+/* =============================
+   GLASS CARD
+============================= */
+
+.glass-card {
+  backdrop-filter:blur(20px);
+  background:var(--glass-bg);
+  border:1px solid var(--glass-border);
+  border-radius:20px;
+  padding:30px;
+  transition:0.4s var(--transition);
+}
+
+.glass-card:hover {
+  transform:translateY(-8px);
+  box-shadow:0 0 30px rgba(138,43,226,0.3);
+}
+
+/* =============================
+   SERVICES GRID
+============================= */
+
+.grid {
+  display:grid;
+  gap:30px;
+}
+
+.services-grid {
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+}
+
+/* =============================
+   TIMELINE
+============================= */
+
+.timeline {
+  display:flex;
+  gap:40px;
+  flex-wrap:wrap;
+}
+
+.step {
+  flex:1;
+  min-width:200px;
+}
+
+/* =============================
+   TESTIMONIALS
+============================= */
+
+.testimonials {
+  position:relative;
+  overflow:hidden;
+}
+
+.testimonial-wrapper {
+  display:flex;
+  transition:transform 0.6s var(--transition);
+}
+
+/* =============================
+   CONTACT
+============================= */
+
+form input, form textarea {
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border-radius:10px;
+  border:1px solid var(--glass-border);
+  background:rgba(255,255,255,0.03);
+  color:white;
+  outline:none;
+  transition:0.3s;
+}
+
+form input:focus, form textarea:focus {
+  border-color:var(--cyan);
+  box-shadow:0 0 10px var(--cyan);
+}
+
+/* =============================
+   FOOTER
+============================= */
+
+footer {
+  text-align:center;
+  padding:40px 8%;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(10px);
+}
+
+/* =============================
+   BACK TO TOP
+============================= */
+
+#backToTop {
+  position:fixed;
+  bottom:30px;
+  right:30px;
+  background:var(--neon-blue);
+  border:none;
+  padding:12px 16px;
+  border-radius:50%;
+  cursor:pointer;
+  display:none;
+}
+
+/* =============================
+   RESPONSIVE
+============================= */
 
 @media(max-width:768px){
-.nav-links{display:none}
-.hamburger{display:flex}
-section{padding:90px 6%}
-.hero h1{font-size:2rem}
+  .hero h1 { font-size:2rem; }
+  .navbar { padding:15px 5%; }
+  section { padding:80px 5%; }
 }
+
 </style>
 </head>
+
 <body>
 
 <div class="loader"><span></span></div>
 
-<nav>
-<div class="logo">Arc Guard Digital</div>
-<div class="nav-links">
-<a href="#home">Home</a>
-<a href="#about">About</a>
-<a href="#services">Services</a>
-<a href="#portfolio">Portfolio</a>
-<a href="#process">Process</a>
-<a href="#contact">Contact</a>
-</div>
-<div class="hamburger"><span></span><span></span><span></span></div>
+<nav class="navbar">
+  <div class="logo">Arc Guard Digital</div>
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#process">Process</a>
+    <a href="#contact">Contact</a>
+  </div>
 </nav>
 
-<div class="mobile-menu">
-<a href="#home">Home</a>
-<a href="#about">About</a>
-<a href="#services">Services</a>
-<a href="#portfolio">Portfolio</a>
-<a href="#process">Process</a>
-<a href="#contact">Contact</a>
-</div>
-
 <section class="hero" id="home">
-<div class="glass reveal">
-<h1>We Build High-Converting Websites for Local Businesses</h1>
-<p>Elite-level digital experiences engineered for growth, performance, and measurable results.</p>
-<div class="btn-group">
-<a href="#portfolio" class="btn">View Our Work</a>
-<a href="#contact" class="btn">Get Free Consultation</a>
-</div>
-</div>
+  <div class="hero-container">
+    <h1>We Build High-Converting Websites for Local Businesses</h1>
+    <p>Conversion-focused digital experiences engineered with modern UI precision, performance architecture, and elite design systems.</p>
+    <button class="btn btn-primary">Get Started</button>
+  </div>
 </section>
 
-<section id="about"><h2 class="reveal">About Us</h2>
-<div class="cards">
-<div class="card reveal"><p>Arc Guard Digital crafts premium digital platforms blending strategy, design, and performance into powerful growth engines.</p></div>
-</div></section>
+<section id="services">
+  <h2>Our Services</h2>
+  <div class="grid services-grid">
+    <div class="glass-card">Business Website Development</div>
+    <div class="glass-card">Landing Page Design</div>
+    <div class="glass-card">Website Redesign</div>
+    <div class="glass-card">Speed Optimization</div>
+    <div class="glass-card">SEO Ready Structure</div>
+  </div>
+</section>
 
-<section id="services"><h2 class="reveal">Our Services</h2>
-<div class="cards">
-<div class="card reveal"><h3>Business Website Development</h3><p>Conversion-driven architecture built for scale.</p></div>
-<div class="card reveal"><h3>Landing Page Design</h3><p>Campaign-focused high ROI layouts.</p></div>
-<div class="card reveal"><h3>Website Redesign</h3><p>Upgrade legacy experiences to modern standards.</p></div>
-<div class="card reveal"><h3>Speed Optimization</h3><p>Performance tuned for lightning load times.</p></div>
-<div class="card reveal"><h3>SEO Ready Structure</h3><p>Clean code optimized for discoverability.</p></div>
-</div></section>
+<section id="process">
+  <h2>Our Process</h2>
+  <div class="timeline">
+    <div class="glass-card step">Consultation</div>
+    <div class="glass-card step">Design</div>
+    <div class="glass-card step">Development</div>
+    <div class="glass-card step">Launch</div>
+  </div>
+</section>
 
-<section id="portfolio"><h2 class="reveal">Featured Demo Projects</h2>
-<div class="cards">
-<div class="card reveal"><h3>Gym Website Demo</h3><p>Modern responsive gym template.</p><a href="#" class="btn">View Demo</a></div>
-<div class="card reveal"><h3>Salon Website Demo</h3><p>Elegant salon business template.</p><a href="#" class="btn">View Demo</a></div>
-<div class="card reveal"><h3>Coaching Institute Demo</h3><p>Professional education layout.</p><a href="#" class="btn">View Demo</a></div>
-</div></section>
-
-<section id="process"><h2 class="reveal">Our Process</h2>
-<div class="timeline reveal">
-<div class="step"><h3>Consultation</h3><p>Deep understanding of goals and audience.</p></div>
-<div class="step"><h3>Design</h3><p>Premium UI engineered for clarity.</p></div>
-<div class="step"><h3>Development</h3><p>Performance-first clean architecture.</p></div>
-<div class="step"><h3>Launch</h3><p>Optimized deployment & scaling.</p></div>
-</div></section>
-
-<section><h2 class="reveal">Testimonials</h2>
-<div class="testimonials reveal">
-<div class="testimonial-track">
-<div class="testimonial card"><p>Outstanding experience. Our leads doubled within weeks.</p><div class="stars">★★★★★</div></div>
-<div class="testimonial card"><p>Professional, fast, and extremely polished delivery.</p><div class="stars">★★★★★</div></div>
-<div class="testimonial card"><p>Premium quality. Worth every rupee invested.</p><div class="stars">★★★★★</div></div>
-</div></div></section>
-
-<section id="contact"><h2 class="reveal">Contact Us</h2>
-<form class="contact-form reveal">
-<input type="text" placeholder="Your Name" required>
-<input type="email" placeholder="Your Email" required>
-<textarea rows="5" placeholder="Your Message" required></textarea>
-<button class="btn">Send Message</button>
-</form></section>
+<section id="contact">
+  <h2>Contact Us</h2>
+  <div class="glass-card">
+    <form>
+      <input type="text" placeholder="Name" required>
+      <input type="email" placeholder="Email" required>
+      <textarea rows="4" placeholder="Message"></textarea>
+      <button class="btn btn-primary">Send Message</button>
+    </form>
+  </div>
+</section>
 
 <footer>
-<p>Arc Guard Digital — Premium Digital Growth Partner</p>
-<p>© 2026 Arc Guard Digital</p>
+  <p>Arc Guard Digital — Building Digital Authority</p>
+  <p>© 2026 All Rights Reserved</p>
 </footer>
 
-<div class="whatsapp">💬</div>
-<div class="backtop">↑</div>
+<button id="backToTop">↑</button>
 
 <script>
-window.addEventListener('load',()=>{document.querySelector('.loader').style.opacity='0';setTimeout(()=>document.querySelector('.loader').remove(),600)})
 
-window.addEventListener('scroll',()=>{
-document.querySelector('nav').classList.toggle('scrolled',window.scrollY>50)
-document.querySelector('.backtop').classList.toggle('show',window.scrollY>400)
-})
+/* LOADER */
+window.addEventListener("load",()=>{
+  document.querySelector(".loader").style.opacity="0";
+  setTimeout(()=>document.querySelector(".loader").style.display="none",600);
+});
 
-const reveals=document.querySelectorAll('.reveal')
-const obs=new IntersectionObserver(e=>{e.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('active');if(entry.target.classList.contains('timeline'))entry.target.classList.add('active')}})},{threshold:.2})
-reveals.forEach(r=>obs.observe(r))
+/* NAVBAR SCROLL */
+window.addEventListener("scroll",()=>{
+  document.querySelector(".navbar").classList.toggle("scrolled",window.scrollY>50);
+  document.getElementById("backToTop").style.display=window.scrollY>300?"block":"none";
+});
 
-const hamburger=document.querySelector('.hamburger')
-const mobileMenu=document.querySelector('.mobile-menu')
-hamburger.onclick=()=>{hamburger.classList.toggle('active');mobileMenu.classList.toggle('active')}
+/* BACK TO TOP */
+document.getElementById("backToTop").onclick=()=>{
+  window.scrollTo({top:0,behavior:"smooth"});
+};
 
-const track=document.querySelector('.testimonial-track')
-let index=0
-setInterval(()=>{index=(index+1)%3;track.style.transform=`translateX(-${index*100}%)`},4000)
+/* TESTIMONIAL SLIDER */
+let index=0;
+const wrapper=document.querySelector(".testimonial-wrapper");
+setInterval(()=>{
+  if(wrapper){
+    index=(index+1)%3;
+    wrapper.style.transform=`translateX(-${index*100}%)`;
+  }
+},4000);
 
-document.querySelector('.backtop').onclick=()=>window.scrollTo({top:0,behavior:'smooth'})
+/* INTERSECTION OBSERVER */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.style.opacity=1;
+      entry.target.style.transform="translateY(0)";
+    }
+  });
+},{threshold:0.2});
 
-document.querySelector('.contact-form').onsubmit=e=>{e.preventDefault();alert('Thank you! We will contact you soon.');e.target.reset()}
+document.querySelectorAll(".glass-card").forEach(el=>{
+  el.style.opacity=0;
+  el.style.transform="translateY(40px)";
+  el.style.transition="0.6s ease";
+  observer.observe(el);
+});
+
 </script>
 
 </body>
