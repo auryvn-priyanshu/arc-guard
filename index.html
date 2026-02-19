@@ -10,21 +10,16 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
-html{scroll-behavior:smooth}
-body{background:#0b0b14;color:#fff;overflow-x:hidden;cursor:none}
+html{scroll-behavior:auto}
+body{background:#0b0b14;color:#fff;overflow-x:hidden}
 
-/* Custom Cursor */
-.cursor{width:18px;height:18px;border:2px solid #00f5ff;border-radius:50%;position:fixed;pointer-events:none;transform:translate(-50%,-50%);transition:0.1s ease;z-index:9999}
-.cursor-grow{transform:translate(-50%,-50%) scale(2);background:rgba(0,245,255,0.2)}
-
-/* Loader */
-#loader{position:fixed;inset:0;background:#0b0b14;display:flex;justify-content:center;align-items:center;z-index:9998;transition:.6s}
-.spinner{width:50px;height:50px;border:4px solid rgba(255,255,255,.1);border-top:4px solid #00f5ff;border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{100%{transform:rotate(360deg)}}
+/* Smooth Section Fade */
+section{padding:120px 8%;opacity:0;transform:translateY(80px);transition:1.2s cubic-bezier(.16,1,.3,1)}
+section.visible{opacity:1;transform:translateY(0)}
 
 /* Navbar */
 nav{position:fixed;top:0;width:100%;padding:18px 8%;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.05);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.1);z-index:1000;transition:.4s}
-nav.scrolled{padding:12px 8%;background:rgba(0,0,0,.6)}
+nav.scrolled{background:rgba(0,0,0,.7);padding:12px 8%}
 nav a{color:#fff;text-decoration:none;margin-left:25px;transition:.3s}
 nav a:hover{color:#00f5ff}
 
@@ -35,42 +30,37 @@ nav a:hover{color:#00f5ff}
 .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 
 .nav-links{display:flex}
-.nav-links.mobile{position:absolute;top:70px;right:8%;flex-direction:column;background:rgba(0,0,0,.8);padding:20px;border-radius:15px;display:none}
+.nav-links.mobile{position:absolute;top:70px;right:8%;flex-direction:column;background:rgba(0,0,0,.85);padding:20px;border-radius:15px;display:none}
 .nav-links.mobile.show{display:flex}
 
-/* Particle Canvas */
-#particles{position:fixed;inset:0;z-index:-1}
+/* Hero */
+.hero{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+.glow-bg{position:absolute;width:500px;height:500px;background:radial-gradient(circle,#00f5ff33,transparent 70%);filter:blur(120px);pointer-events:none;transition:transform .1s linear}
 
-/* Sections */
-section{padding:120px 8%;opacity:0;transform:translateY(60px);transition:1s ease}
-section.visible{opacity:1;transform:translateY(0)}
-
-.hero{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center}
-.glass{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(20px);border-radius:20px;padding:60px;max-width:850px;box-shadow:0 10px 40px rgba(0,0,0,.5);transition:.4s}
-
+.glass{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(20px);border-radius:20px;padding:60px;max-width:850px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
 .hero h1{font-size:48px;font-weight:800;margin-bottom:20px}
 .hero p{opacity:.8;margin-bottom:30px}
 
-.btn{display:inline-block;padding:14px 28px;border-radius:30px;text-decoration:none;font-weight:600;position:relative;overflow:hidden;transition:.4s}
+.btn{display:inline-block;padding:14px 28px;border-radius:30px;text-decoration:none;font-weight:600;transition:.4s}
 .primary{background:#00f5ff;color:#000}
 .secondary{border:1px solid #00f5ff;color:#00f5ff}
-.btn:hover{box-shadow:0 0 20px #00f5ff}
-
-/* Magnetic effect */
-.btn{will-change:transform}
+.btn:hover{box-shadow:0 0 25px #00f5ff;transform:translateY(-4px)}
 
 h2{text-align:center;font-size:36px;margin-bottom:60px}
 .grid{display:grid;gap:30px}
 .services-grid,.portfolio-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
 
-.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(18px);padding:30px;border-radius:20px;transition:.4s;transform-style:preserve-3d}
-.card:hover{box-shadow:0 0 30px rgba(0,245,255,.5)}
+.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(18px);padding:30px;border-radius:20px;transition:.4s}
+.card:hover{box-shadow:0 0 35px rgba(0,245,255,.6);transform:translateY(-8px)}
 
 .counter{font-size:40px;font-weight:800;color:#00f5ff}
 
-.contact-form input,.contact-form textarea{width:100%;padding:14px;margin-bottom:20px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);color:#fff}
-.error{border-color:red}
-.success-msg{color:#00f5ff;margin-top:10px}
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:.4s;z-index:2000}
+.modal.active{opacity:1;visibility:visible}
+.modal-content{background:#111;border-radius:20px;padding:40px;max-width:600px;width:90%;text-align:center;position:relative}
+.modal-content img{width:100%;border-radius:15px;margin-bottom:20px}
+.close{position:absolute;top:15px;right:20px;cursor:pointer;font-size:20px}
 
 footer{text-align:center;padding:30px;background:rgba(255,255,255,.05);backdrop-filter:blur(12px)}
 
@@ -85,27 +75,22 @@ footer{text-align:center;padding:30px;background:rgba(255,255,255,.05);backdrop-
 </head>
 <body>
 
-<div id="loader"><div class="spinner"></div></div>
-<div class="cursor" id="cursor"></div>
-<canvas id="particles"></canvas>
-
 <nav id="navbar">
 <strong>Arc Guard Digital</strong>
 <div class="nav-links" id="navLinks">
 <a href="#about">About</a>
 <a href="#services">Services</a>
 <a href="#portfolio">Portfolio</a>
-<a href="#contact">Contact</a>
 </div>
 <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
 </nav>
 
 <section class="hero visible">
+<div class="glow-bg" id="glow"></div>
 <div class="glass">
 <h1>We Build High-Converting Websites for Local Businesses</h1>
 <p>Premium design. Strategic structure. Built to convert visitors into paying customers.</p>
 <a href="#portfolio" class="btn primary">View Our Work</a>
-<a href="#contact" class="btn secondary">Get Free Consultation</a>
 </div>
 </section>
 
@@ -127,11 +112,7 @@ footer{text-align:center;padding:30px;background:rgba(255,255,255,.05);backdrop-
 
 <section id="portfolio">
 <h2>Featured Demo Projects</h2>
-<div class="grid portfolio-grid">
-<div class="card"><h3>Gym Website Demo</h3><p>Modern responsive gym website template.</p><a href="#" class="btn primary">View Demo</a></div>
-<div class="card"><h3>Salon Website Demo</h3><p>Elegant salon business website template.</p><a href="#" class="btn primary">View Demo</a></div>
-<div class="card"><h3>Coaching Institute Demo</h3><p>Professional education website layout.</p><a href="#" class="btn primary">View Demo</a></div>
-</div>
+<div class="grid portfolio-grid" id="portfolioContainer"></div>
 </section>
 
 <section id="why">
@@ -144,113 +125,90 @@ footer{text-align:center;padding:30px;background:rgba(255,255,255,.05);backdrop-
 </div>
 </section>
 
-<section id="contact">
-<h2>Contact Us</h2>
-<div class="card contact-form">
-<input type="text" id="name" placeholder="Name">
-<input type="email" id="email" placeholder="Email">
-<textarea id="message" rows="5" placeholder="Message"></textarea>
-<button class="btn primary" id="submitBtn">Submit</button>
-<div id="formMsg"></div>
-<br><br>
-<a href="https://wa.me/1234567890" target="_blank" class="btn secondary">WhatsApp Us</a>
-</div>
-</section>
-
 <footer>© 2026 Arc Guard Digital</footer>
 <button id="topBtn">↑</button>
 
-<script>
-window.addEventListener('load',()=>{loader.style.opacity='0';setTimeout(()=>loader.style.display='none',600)})
+<div class="modal" id="modal">
+<div class="modal-content">
+<span class="close" id="closeModal">✕</span>
+<img id="modalImg" loading="lazy" src="" alt="Project Preview">
+<h3 id="modalTitle"></h3>
+<p id="modalDesc"></p>
+</div>
+</div>
 
-// Navbar scroll
+<script>
+// Inertia Smooth Scroll
+let targetScroll=window.scrollY,currentScroll=window.scrollY;
+function smoothScroll(){currentScroll+= (targetScroll-currentScroll)*0.08;window.scrollTo(0,currentScroll);requestAnimationFrame(smoothScroll)}
+smoothScroll();
+window.addEventListener('wheel',e=>{targetScroll+=e.deltaY});
+
+// Navbar + Reveal
 window.addEventListener('scroll',()=>{
 if(window.scrollY>50)navbar.classList.add('scrolled');else navbar.classList.remove('scrolled');
 if(window.scrollY>300)topBtn.style.display='block';else topBtn.style.display='none';
-
-// reveal
-
 document.querySelectorAll('section').forEach(sec=>{
 if(sec.getBoundingClientRect().top<window.innerHeight-100)sec.classList.add('visible')
 })
-})
+});
 
-topBtn.onclick=()=>window.scrollTo({top:0,behavior:'smooth'})
+topBtn.onclick=()=>{targetScroll=0};
+
+// Glow follow mouse
+const glow=document.getElementById('glow');
+document.addEventListener('mousemove',e=>{glow.style.transform=`translate(${e.clientX-250}px,${e.clientY-250}px)`});
 
 // Hamburger
-hamburger.onclick=()=>{
-hamburger.classList.toggle('active');
-navLinks.classList.toggle('mobile');
-navLinks.classList.toggle('show');
-}
+hamburger.onclick=()=>{hamburger.classList.toggle('active');navLinks.classList.toggle('mobile');navLinks.classList.toggle('show');};
 
-// Custom Cursor
-const cursor=document.getElementById('cursor');
-document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px'})
-document.querySelectorAll('a,.btn').forEach(el=>{
-el.addEventListener('mouseenter',()=>cursor.classList.add('cursor-grow'));
-el.addEventListener('mouseleave',()=>cursor.classList.remove('cursor-grow'));
-})
-
-// Magnetic buttons
-document.querySelectorAll('.btn').forEach(btn=>{
-btn.addEventListener('mousemove',e=>{
-const rect=btn.getBoundingClientRect();
-const x=e.clientX-rect.left-rect.width/2;
-const y=e.clientY-rect.top-rect.height/2;
-btn.style.transform=`translate(${x*0.2}px,${y*0.2}px)`;
-});
-btn.addEventListener('mouseleave',()=>btn.style.transform='translate(0,0)');
-});
-
-// 3D tilt cards
-
-document.querySelectorAll('.card').forEach(card=>{
-card.addEventListener('mousemove',e=>{
-const rect=card.getBoundingClientRect();
-const x=e.clientX-rect.left;
-const y=e.clientY-rect.top;
-const centerX=rect.width/2;
-const centerY=rect.height/2;
-const rotateX=-(y-centerY)/15;
-const rotateY=(x-centerX)/15;
-card.style.transform=`rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-});
-card.addEventListener('mouseleave',()=>card.style.transform='rotateX(0) rotateY(0)');
-});
-
-// Counters
+// Counter Animation
 const counters=document.querySelectorAll('.counter');
-const speed=200;
 counters.forEach(counter=>{
-const update=()=>{
-const target=+counter.getAttribute('data-target');
-const count=+counter.innerText;
-const inc=target/speed;
-if(count<target){counter.innerText=Math.ceil(count+inc);setTimeout(update,10)}else{counter.innerText=target}
-}
-update();
+let started=false;
+function animateCounter(){
+if(started)return;
+if(counter.getBoundingClientRect().top<window.innerHeight){
+started=true;
+const target=+counter.dataset.target;
+let count=0;
+const step=target/100;
+const interval=setInterval(()=>{
+count+=step;
+if(count>=target){counter.textContent=target;clearInterval(interval)}
+else counter.textContent=Math.ceil(count);
+},15);
+}}
+window.addEventListener('scroll',animateCounter);
+animateCounter();
 });
 
-// Particles
-const canvas=document.getElementById('particles');
-const ctx=canvas.getContext('2d');
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-let particles=[];
-for(let i=0;i<60;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:Math.random()-.5,dy:Math.random()-.5});
-function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(0,245,255,0.6)';ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>canvas.width)p.dx*=-1;if(p.y<0||p.y>canvas.height)p.dy*=-1});requestAnimationFrame(animate)}
-animate();
+// CMS-ready portfolio (JSON structure)
+const projects=[
+{title:'Gym Website Demo',desc:'Modern responsive gym website template.',img:'https://via.placeholder.com/600x400'},
+{title:'Salon Website Demo',desc:'Elegant salon business website template.',img:'https://via.placeholder.com/600x400'},
+{title:'Coaching Institute Demo',desc:'Professional education website layout.',img:'https://via.placeholder.com/600x400'}
+];
 
-// Form Validation + Email (Formspree ready)
-submitBtn.onclick=()=>{
-let valid=true;
-[name,email,message].forEach(field=>{field.classList.remove('error');if(!field.value.trim()){field.classList.add('error');valid=false}});
-if(!valid){formMsg.innerText='Please fill all fields correctly.';return}
-fetch('https://formspree.io/f/your-id',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name.value,email:email.value,message:message.value})})
-.then(()=>{formMsg.innerHTML='<div class="success-msg">Message Sent Successfully!</div>';name.value=email.value=message.value='';})
-.catch(()=>formMsg.innerText='Error sending message.');
+const container=document.getElementById('portfolioContainer');
+projects.forEach(p=>{
+const card=document.createElement('div');
+card.className='card';
+card.innerHTML=`<h3>${p.title}</h3><p>${p.desc}</p><button class="btn primary">Preview</button>`;
+card.querySelector('button').onclick=()=>openModal(p);
+container.appendChild(card);
+});
+
+// Modal
+const modal=document.getElementById('modal');
+function openModal(p){
+modal.classList.add('active');
+modalImg.src=p.img;
+modalTitle.textContent=p.title;
+modalDesc.textContent=p.desc;
 }
+closeModal.onclick=()=>modal.classList.remove('active');
+modal.onclick=e=>{if(e.target===modal)modal.classList.remove('active')};
 </script>
 
 </body>
